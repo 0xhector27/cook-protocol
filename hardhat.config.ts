@@ -1,7 +1,13 @@
+import * as dotenv from "dotenv";
+
 import { task } from "hardhat/config";
 import "@nomiclabs/hardhat-waffle";
 import "hardhat-typechain";
 import { HardhatUserConfig } from "hardhat/config";
+
+dotenv.config();
+
+const BLOCK_NUM = parseInt(process.env.FORK_BLOCK_NUM || "");
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -21,22 +27,15 @@ const config: HardhatUserConfig = {
     localhost: {
       url: "http://localhost:8545"
     },
-
-
-
     hardhat: {
-
       accounts: {
         mnemonic: "clutch captain shoe salt awake harvest setup primary inmate ugly among become",
       },
-
       forking: {
-        url: "https://eth-mainnet.alchemyapi.io/v2/H1fS_0d_pksxPz7Ws6SRYM_x1Szh6fp7",
-        blockNumber: 11169308
+        url: process.env.MAINNET_URL || "",
+        blockNumber: BLOCK_NUM
       }
-
     }
-
   },
   solidity: "0.6.12",
 };
