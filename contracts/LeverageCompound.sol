@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0
+
 pragma solidity >=0.6.6;
 pragma experimental ABIEncoderV2;
 
@@ -7,7 +9,6 @@ import "@openzeppelin/contracts/token/ERC20/SafeERC20.sol";
 import "./FlashSwapCompoundHandler.sol";
 import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
 import "hardhat/console.sol";
-
 
 contract CompoundTaker is ProxyPermission {
     using SafeERC20 for IERC20;
@@ -48,20 +49,6 @@ contract CompoundTaker is ProxyPermission {
         console.log("User USDT balance: %d", IERC20(destAddr).balanceOf(msg.sender));
         console.log("User Allowance USDT balance: %d", IERC20(destAddr).allowance(msg.sender, msg.sender));
         console.log("address(this) in CompoundTaker: %s", address(this));
-        // IERC20(destAddr).safeTransferFrom(msg.sender, address(this), destAmount);
-        // if (destAddr != ETH_ADDRESS) {
-            // IERC20(destAddr).transferFrom(msg.sender, address(this), destAmount);
-        // } else {
-        //     require(msg.value >= destAmount, "Must send correct amount of eth");
-        // }
-
-        // Send tokens to FL receiver
-        // sendDeposit(_compReceiver, _exchangeData.destAddr);
-
-        // Pack the struct data
-        // (uint[4] memory numData, address[6] memory cAddresses, bytes memory callData)
-                                            // = _packData(_createInfo, _exchangeData);
-        // bytes memory paramsData = abi.encode(numData, cAddresses, callData, address(this));
         bytes memory paramsData = abi.encode(cCollAddress, cBorrowAddress, address(this));
 
         givePermission(_FlashSwapCompoundHandler);
@@ -77,7 +64,7 @@ contract CompoundTaker is ProxyPermission {
         removePermission(_FlashSwapCompoundHandler);
 
         // logger.Log(address(this), msg.sender, "CompoundLeveragedLoan",
-            // abi.encode(_exchangeData.srcAddr, _exchangeData.destAddr, loanAmount, _exchangeData.destAmount));
+        // abi.encode(_exchangeData.srcAddr, _exchangeData.destAddr, loanAmount, _exchangeData.destAmount));
     }
 
     function sendDeposit(address payable _compoundReceiver, address _token) internal {
@@ -87,29 +74,5 @@ contract CompoundTaker is ProxyPermission {
 
         _compoundReceiver.transfer(address(this).balance);
     }
-
-//    function _packData(
-//        CreateInfo memory _createInfo,
-//        SaverExchangeCore.ExchangeData memory exchangeData
-//    ) internal pure returns (uint[4] memory numData, address[6] memory cAddresses, bytes memory callData) {
-//
-//        numData = [
-//            exchangeData.srcAmount,
-//            exchangeData.destAmount,
-//            exchangeData.minPrice,
-//            exchangeData.price0x
-//        ];
-//
-//        cAddresses = [
-//            _createInfo.cCollAddress,
-//            _createInfo.cBorrowAddress,
-//            exchangeData.srcAddr,
-//            exchangeData.destAddr,
-//            exchangeData.exchangeAddr,
-//            exchangeData.wrapper
-//        ];
-//
-//        callData = exchangeData.callData;
-//    }
 }
 

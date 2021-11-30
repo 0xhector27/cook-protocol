@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.6.6;
 
 import '@uniswap/v2-core/contracts/interfaces/IUniswapV2Callee.sol';
@@ -52,7 +53,6 @@ contract FlashSwapCompoundHandler is IUniswapV2Callee {
 
     // Context: DSProxy
     function openLoan(address cCollateralToken, address cBorrowToken, uint uniswapBorrowTokenAmount) public {
-        console.log("HELLO!");
         address collateralToken = CTokenInterface(cCollateralToken).underlying();
         address borrowToken = CTokenInterface(cBorrowToken).underlying();
         uint collateralTokenAmount = IERC20(collateralToken).balanceOf(address(this));

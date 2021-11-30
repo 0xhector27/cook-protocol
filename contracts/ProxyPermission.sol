@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.6.0;
 
 import "./DSProxy/DSGuard.sol";
@@ -10,6 +11,7 @@ contract ProxyPermission {
 
     /// @notice Called in the context of DSProxy to authorize an address
     /// @param _contractAddr Address which will be authorized
+
     function givePermission(address _contractAddr) public {
         console.log("address(this) in ProxyPermission: %s", address(this));
         address currAuthority = address(DSAuth(address(this)).authority());
@@ -29,6 +31,7 @@ contract ProxyPermission {
 
     /// @notice Called in the context of DSProxy to remove authority of an address
     /// @param _contractAddr Auth address which will be removed from authority list
+    
     function removePermission(address _contractAddr) public {
         address currAuthority = address(DSAuth(address(this)).authority());
 
